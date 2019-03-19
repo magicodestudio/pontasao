@@ -1,0 +1,27 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Home</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <h1>Get Location</h1>
+  
+  <button ion-button (click)="getGeolocation()">Get Location</button>
+  <button ion-button (click)="watchLocation()">Watch Location Updates</button>
+  <button ion-button (click)="stopLocationWatch()">Stop Location Watch</button>
+  <p>Latitude : {{responseObj.latitude}}</p>
+  <p>Longitude : {{responseObj.longitude}}</p>
+  <p>Accuracy : {{responseObj.accuracy}}</p>
+  <p class="address-text">
+ 
+    <span class="watch-text" *ngIf="isWatching; else notWatching">
+         Watching Location
+      </span>
+      <ng-template #notWatching>
+          Location Watch Stopped
+      </ng-template>
+ 
+    <br>Address : {{responseObj.address}}</p>
+ 
+</ion-content>
