@@ -1,10 +1,23 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>Home</ion-title>
+    <ion-title>NFC-Access Card</ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
+  <h2>Please Scan Something</h2>
+
+  <ion-card *ngIf="scanned" class="granted">
+    <ion-card-header>
+      Scanare reusita!
+    </ion-card-header>
+    <ion-card-content>
+      <p>Account Tag ID: {{ tagId  }}</p>
+      <p>lorem ipsum ceva latinesc.</p>
+    </ion-card-content>
+  </ion-card>
+
+
   <h1>Get Location</h1>
   
   <button ion-button (click)="getGeolocation()">Get Location</button>

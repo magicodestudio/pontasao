@@ -14,6 +14,8 @@ import { NativeGeocoder, NativeGeocoderReverseResult, NativeGeocoderForwardResul
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
+import { NFC } from "@ionic-native/nfc";
+
 @NgModule({
   declarations: [
     MyApp,
@@ -35,6 +37,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     TabsPage
   ],
   providers: [
+    NFC,
     StatusBar,
     SplashScreen,
     Geolocation,

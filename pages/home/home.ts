@@ -4,6 +4,8 @@ import { Geolocation } from '@ionic-native/geolocation';
 import { Platform } from 'ionic-angular';
 import { NativeGeocoder, NativeGeocoderReverseResult, NativeGeocoderForwardResult, NativeGeocoderOptions } from '@ionic-native/native-geocoder';
 
+import { NFC } from "@ionic-native/nfc";
+
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html'
@@ -11,6 +13,13 @@ import { NativeGeocoder, NativeGeocoderReverseResult, NativeGeocoderForwardResul
 
 
 export class HomePage {
+
+
+  granted: boolean;
+  denied: boolean;
+  scanned: boolean;
+  tagId: string;
+
 
   responseObj:any;
   watchLocationUpdates:any; 
@@ -29,7 +38,8 @@ export class HomePage {
     public navCtrl: NavController,
     //public loadingCtrl: LoadingController,
     private geolocation: Geolocation,
-    private nativeGeocoder: NativeGeocoder
+    private nativeGeocoder: NativeGeocoder, 
+    private nfc: NFC
     ) {
 
       //Custome object to save information returned
@@ -39,6 +49,8 @@ export class HomePage {
         accuracy:0,
         address:""
       };
+
+      this.resetScanData();
   }
 /*
   //Show UI loader of ionic
@@ -117,6 +129,53 @@ export class HomePage {
   stopLocationWatch(){
     this.isWatching = false;
     this.watchLocationUpdates.unsubscribe();
+  }
+
+
+  //NFC PART - default code
+  resetScanData() {
+    this.granted = false;
+    this.scanned = false;
+    this.tagId = "";
+  }
+
+  ionViewDidEnter() {
+    this.nfc.enabled().then((resolve) => {
+      this.addListenNFC();
+    }).catch((reject) => {
+      alert("NFC is not supported by your Device");
+    });
+  }
+
+  addListenNFC() {
+
+    this.nfc.addTagDiscoveredListener(nfcEvent => this.sesReadNFC(nfcEvent.tag)).subscribe(data => {
+      if (data && data.tag && data.tag.id) {
+        let tagId = this.nfc.bytesToHexString(data.tag.id);
+        if (tagId) {
+          this.tagId = JSON.stringify(data);//tagId;
+          this.scanned = true;
+
+          // only testing data consider to ask web api for access
+          //this.granted = [
+          //  "7d3c6179"
+          //].indexOf(tagId) != -1;
+
+          //am modificat tagId sa nu fie doar id ci am vrut sa citesc tot tag-ul, posibil sa nu fie asta calea (oricum noua ne trebuie doar ID-ul dar nah...)
+
+        } else {
+          alert('NFC_NOT_DETECTED');
+        }
+      }
+    });
+  }
+
+  sesReadNFC(data): void {
+
+  }
+
+  failNFC(err) {
+    alert("Error while reading: Please Retry");
   }
 
 }
