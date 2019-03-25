@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { Geolocation } from '@ionic-native/geolocation';
 import { Platform } from 'ionic-angular';
-import { NativeGeocoder, NativeGeocoderReverseResult, NativeGeocoderForwardResult, NativeGeocoderOptions } from '@ionic-native/native-geocoder';
+//import { NativeGeocoder, NativeGeocoderOptions } from '@ionic-native/native-geocoder';
 
 import { NFC } from "@ionic-native/nfc";
 import { Device } from '@ionic-native/device';
@@ -36,10 +36,10 @@ export class HomePage {
   isWatching:boolean;
 
   //Geocoder configuration
-  geoencoderOptions: NativeGeocoderOptions = {
+  /*geoencoderOptions: NativeGeocoderOptions = {
     useLocale: true,
     maxResults: 5
-  };
+  };*/
   
 
 
@@ -47,7 +47,7 @@ export class HomePage {
     public navCtrl: NavController,
     //public loadingCtrl: LoadingController,
     private geolocation: Geolocation,
-    private nativeGeocoder: NativeGeocoder, 
+    //private nativeGeocoder: NativeGeocoder, 
     private nfc: NFC,
     private device: Device,
     public platform: Platform,

@@ -10,7 +10,7 @@ import { TabsPage } from '../pages/tabs/tabs';
 
 import { Geolocation } from '@ionic-native/geolocation';
 //import {GoogleMaps,Environment} from '@ionic-native/google-maps';
-import { NativeGeocoder, NativeGeocoderReverseResult, NativeGeocoderForwardResult, NativeGeocoderOptions } from '@ionic-native/native-geocoder';
+//import { NativeGeocoder } from '@ionic-native/native-geocoder';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
@@ -45,7 +45,7 @@ import { SQLite} from '@ionic-native/sqlite';
     StatusBar,
     SplashScreen,
     Geolocation,
-    NativeGeocoder,
+    //NativeGeocoder,
    // GoogleMaps,
     //Environment,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
