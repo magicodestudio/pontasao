@@ -15,6 +15,8 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { NFC } from "@ionic-native/nfc";
+import { Device } from '@ionic-native/device';
+import { SQLite} from '@ionic-native/sqlite';
 
 @NgModule({
   declarations: [
@@ -38,6 +40,8 @@ import { NFC } from "@ionic-native/nfc";
   ],
   providers: [
     NFC,
+    SQLite,
+    Device,
     StatusBar,
     SplashScreen,
     Geolocation,

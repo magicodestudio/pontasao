@@ -5,8 +5,23 @@
 </ion-header>
 
 <ion-content padding>
-  <h2>Please Scan Something</h2>
 
+  <ion-item>
+    <ion-label>Data curenta:</ion-label>
+    <ion-label>{{formattedDate}}</ion-label>
+  </ion-item>
+  <ion-item>
+    <ion-label>Device ID:</ion-label>
+    <ion-label>{{deviceUUID}}</ion-label>
+  </ion-item>
+  <ion-item>
+    <p>Latitude : {{responseObj.latitude}}</p>
+    <p>Longitude : {{responseObj.longitude}}</p>
+    <p>Accuracy : {{responseObj.accuracy}}</p>
+  </ion-item>
+
+
+  
   <ion-card *ngIf="scanned" class="granted">
     <ion-card-header>
       Scanare reusita!
@@ -18,23 +33,30 @@
   </ion-card>
 
 
-  <h1>Get Location</h1>
-  
-  <button ion-button (click)="getGeolocation()">Get Location</button>
-  <button ion-button (click)="watchLocation()">Watch Location Updates</button>
-  <button ion-button (click)="stopLocationWatch()">Stop Location Watch</button>
-  <p>Latitude : {{responseObj.latitude}}</p>
-  <p>Longitude : {{responseObj.longitude}}</p>
-  <p>Accuracy : {{responseObj.accuracy}}</p>
-  <p class="address-text">
+  <ion-list>
+    <ion-item-sliding *ngFor="let item of items; let i=index">
+      <ion-item nopadding>
+        <p>
+          a: {{item.a}}<br>
+          {{item.b}}
+        </p>
+        <h3 item-end>
+          Amount: ${{item.c}}
+        </h3>
+      </ion-item>
+      <ion-item-options side="right">
+        <button ion-button color="primary">
+          <ion-icon name="paper"></ion-icon>
+        </button>
+        <button ion-button color="danger">
+          <ion-icon name="trash"></ion-icon>
+        </button>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
+
+
  
-    <span class="watch-text" *ngIf="isWatching; else notWatching">
-         Watching Location
-      </span>
-      <ng-template #notWatching>
-          Location Watch Stopped
-      </ng-template>
- 
-    <br>Address : {{responseObj.address}}</p>
+<h2>Please Scan Something</h2>
  
 </ion-content>
