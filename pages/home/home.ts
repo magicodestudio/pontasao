@@ -216,31 +216,9 @@ export class HomePage {
     return returnul;
   }
 
-/*
-  checkIfInDb(check_device, check_card) {
-
-    var startDay = this.getBeginEndOfDay('begin');
-    var endDay = this.getBeginEndOfDay('end');
-    var verificare = 'nimic';
-
-    this.sqlstorage.executeSql('select * from pontaje where (timestamp between ' + startDay + ' and ' + endDay + ') and device="'+check_device+'" and card="'+check_card+'" order by pid desc limit 1',[])
-    .then(findu => {
-      if (findu.rows.length == 1 ) {
-        //we have a winner, return the pid        
-        //verificare = findu.rows.item(0).status;
-
-      } 
-    })
-    .catch(e => alert(JSON.stringify(e)));
-    alert("la sf functiei de verificare, status= "+verificare);
-    return verificare;
-  }
-*/
 
   refreshDBarray() {
 
-    
-    
       //alert('s-a apelat primenirea array');
       this.items = [];
 
@@ -312,13 +290,13 @@ export class HomePage {
         //alert(this.schimbarea);
       }
 
-      alert("la sf functiei de verificare, status= "+this.schimbarea);
+      //alert("la sf functiei de verificare, status= "+this.schimbarea);
 
 
     this.sqlstorage.executeSql('INSERT into pontaje (device, card, gps, date, time, status, timestamp) values (?,?,?,?,?,?,?)',[this.deviceUUID,this.tagId,this.responseObj.latitude+','+this.responseObj.longitude, datadeinserat, oradeinserat, this.schimbarea, dataazi.getTime()])
     .then(res => {
       //insert is successful, we should rebuild array
-      alert("am inserat id: "+res['insertId']);
+      //alert("am inserat id: "+res['insertId']);
       this.refreshDBarray()
 
     })

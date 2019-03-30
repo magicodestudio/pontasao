@@ -3,4 +3,35 @@ page-home {
         background-color: green;
         color: blanchedalmond;
     }
+
+    .item-md ion-thumbnail {
+	    min-width: 1px;
+	    min-height: 80px;
+	    float: left;
+	    width: 12%;
+	}
+    .item-md ion-thumbnail img {
+    	width: 100%;
+    	height: auto;
+    }
+    .item-md h2 {
+	    margin: 2px 0;
+	    padding-left:10px;
+	    font-size: 1.6rem;
+	    font-weight: 500;
+	    float: left;
+	    width: 40%;
+	}
+	.item-md h2 small {
+	    display: block;
+	    font-weight:300;
+	}
+	.item-md .itemstatus {
+		width: 48%;
+	    float: left;
+	    text-align:right;
+	}
+	.item-md .itemstatus small {
+		display:block;
+	}
 }
