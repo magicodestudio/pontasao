@@ -10,13 +10,14 @@ import { TabsPage } from '../pages/tabs/tabs';
 
 import { Geolocation } from '@ionic-native/geolocation';
 //import {GoogleMaps,Environment} from '@ionic-native/google-maps';
-//import { NativeGeocoder } from '@ionic-native/native-geocoder';
+//import { NativeGeocoder, NativeGeocoderReverseResult, NativeGeocoderForwardResult, NativeGeocoderOptions } from '@ionic-native/native-geocoder';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { NFC } from "@ionic-native/nfc";
 import { Device } from '@ionic-native/device';
 import { SQLite} from '@ionic-native/sqlite';
+import { Toast } from '@ionic-native/toast';
 
 @NgModule({
   declarations: [
@@ -44,6 +45,7 @@ import { SQLite} from '@ionic-native/sqlite';
     Device,
     StatusBar,
     SplashScreen,
+    Toast,
     Geolocation,
     //NativeGeocoder,
    // GoogleMaps,

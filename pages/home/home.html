@@ -5,7 +5,7 @@
 </ion-header>
 
 <ion-content padding>
-
+<h2>Apropiați cardul</h2>
   <ion-item>
     <ion-label>Data curenta:</ion-label>
     <ion-label>{{formattedDate}}</ion-label>
@@ -20,43 +20,34 @@
     <p>Accuracy : {{responseObj.accuracy}}</p>
   </ion-item>
 
+    <p>select: {{bababiba}}</p>
 
-  
-  <ion-card *ngIf="scanned" class="granted">
-    <ion-card-header>
-      Scanare reusita!
-    </ion-card-header>
-    <ion-card-content>
-      <p>Account Tag ID: {{ tagId  }}</p>
-      <p>lorem ipsum ceva latinesc.</p>
-    </ion-card-content>
-  </ion-card>
+
 
 
   <ion-list>
-    <ion-item-sliding *ngFor="let item of items; let i=index">
-      <ion-item nopadding>
+    <ion-item *ngFor="let item of items;">
+      <ion-icon *ngIf="item.status == 'start'" name="time"></ion-icon>
+      <ion-icon *ngIf="item.status == 'stop'" name="warning"></ion-icon>
         <p>
-          a: {{item.a}}<br>
-          {{item.b}}
+          pid:    {{item.pid}}<br>
+          device: {{item.device}}<br>
+          card:   {{item.card}}<br>
+          gps:    {{item.gps}}<br>
+          date:   {{item.date}}<br>
+          time:   {{item.time}}<br>
+          status: {{item.status}}<br>
+          timestamp: {{item.timestamp}}<br>
+          synced: {{item.synced}}
+
         </p>
-        <h3 item-end>
-          Amount: ${{item.c}}
-        </h3>
-      </ion-item>
-      <ion-item-options side="right">
-        <button ion-button color="primary">
-          <ion-icon name="paper"></ion-icon>
-        </button>
-        <button ion-button color="danger">
-          <ion-icon name="trash"></ion-icon>
-        </button>
-      </ion-item-options>
-    </ion-item-sliding>
+    </ion-item>
   </ion-list>
 
 
+
+
  
-<h2>Please Scan Something</h2>
+
  
 </ion-content>

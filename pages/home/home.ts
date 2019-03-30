@@ -1,12 +1,13 @@
-import { Component } from '@angular/core';
+import { Component, NgZone  } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { Geolocation } from '@ionic-native/geolocation';
 import { Platform } from 'ionic-angular';
-//import { NativeGeocoder, NativeGeocoderOptions } from '@ionic-native/native-geocoder';
+//import { NativeGeocoder, NativeGeocoderReverseResult, NativeGeocoderForwardResult, NativeGeocoderOptions } from '@ionic-native/native-geocoder';
 
 import { NFC } from "@ionic-native/nfc";
 import { Device } from '@ionic-native/device';
 import { SQLite, SQLiteObject } from '@ionic-native/sqlite';
+import { Toast } from '@ionic-native/toast';
 
 @Component({
   selector: 'page-home',
@@ -21,8 +22,11 @@ export class HomePage {
   formattedDateObj;
   unixTime;
   deviceUUID;
-  //sqlstorage: SQLite;
+  bababiba;
+  sqlstorage: SQLiteObject;
   items: any = [];
+  schimbarea: string = 'start';
+  zone;
 
   granted: boolean;
   denied: boolean;
@@ -35,12 +39,12 @@ export class HomePage {
   //loading:any;
   isWatching:boolean;
 
-  //Geocoder configuration
-  /*geoencoderOptions: NativeGeocoderOptions = {
+/*  //Geocoder configuration
+  geoencoderOptions: NativeGeocoderOptions = {
     useLocale: true,
     maxResults: 5
-  };*/
-  
+  };
+ */ 
 
 
   constructor(
@@ -51,7 +55,8 @@ export class HomePage {
     private nfc: NFC,
     private device: Device,
     public platform: Platform,
-    private sqlite: SQLite
+    private sqlite: SQLite,
+    private toast: Toast
     ) {
 
       //Custome object to save information returned
@@ -67,54 +72,33 @@ export class HomePage {
       this.getFormattedDate();
       this.unixTime = this.currentDate.getTime();
 
-      this.platform.ready().then(() => {
-
-          
-
-          
-
+      this.platform.ready().then(() => {     
+  
+          //read location
           this.getGeolocation();
 
+          //read device UUID
+          this.deviceUUID = this.device.uuid;
+
+          this.zone = new NgZone({ enableLongStackTrace: false });
+
           this.sqlite.create({
-      name: 'aliopontaj.db',
-      location: 'default'
-    }).then((db: SQLiteObject) => {
-      db.executeSql('CREATE TABLE IF NOT EXISTS expense(rowid INTEGER PRIMARY KEY, a TEXT, b TEXT, c INT)', [])
-      .then(res => alert('Executed SQL'))
-      .catch(e => alert(e));
+            name: 'aliopontaj.db',
+            location: 'default'
+          }).then((db: SQLiteObject) => {
+            this.sqlstorage = db;
+            db.executeSql('CREATE TABLE IF NOT EXISTS pontaje (pid INTEGER PRIMARY KEY, device TEXT NOT NULL, card TEXT NOT NULL, gps TEXT NOT NULL, date TEXT NOT NULL, time TEXT NOT NULL, status TEXT NOT NULL, timestamp NUMERIC NOT NULL, synced INTEGER NOT NULL DEFAULT 0)', [])
+            .then(res => {})
+            .catch(e => alert(JSON.stringify(e)));
 
-      db.executeSql('INSERT into expense (rowid, a, b, c) values (?,?,?,?)',[1,'ceva','altceva',1])
-      .then(res => alert('Executed SQL'))
-      .catch(e => alert(e));
+            this.refreshDBarray();
 
-      db.executeSql('SELECT * FROM expense ORDER BY rowid DESC', [])
-      .then(res => {
-        this.items = [];
-        for(var i=0; i<res.rows.length; i++) {
-          this.items.push({rowid:res.rows.item(i).rowid,a:res.rows.item(i).a,b:res.rows.item(i).b,c:res.rows.item(i).c})
-        }
-      })
-      .catch(e => console.log(e));
-
-
-    }).catch(e => alert(e));
+          }).catch(e => alert(JSON.stringify(e)));
           
       });
 
   }
-/*
-  //Show UI loader of ionic
-  showLoader(){
-    this.loading = this.loadingCtrl.create({
-      content: 'Please wait...'
-    });
-    this.loading.present();
-  }
-  
-  //Hide UI loader of ionic
-  hideLoader(){
-    this.loading.dismiss();
-  }*/
+
 
   //Get current coordinates of device
   getGeolocation(){
@@ -125,56 +109,7 @@ export class HomePage {
       alert('Error getting location'+ JSON.stringify(error));
     });
   }
-/*
-  //geocoder method to fetch address from coordinates passed as arguments
-  getGeoencoder(latitude,longitude){
-    this.nativeGeocoder.reverseGeocode(latitude, longitude, this.geoencoderOptions)
-    .then((result: NativeGeocoderReverseResult[]) => {
-      this.responseObj.address = this.generateAddress(result[0]);
-    })
-    .catch((error: any) => {
-      alert('Error getting location'+ JSON.stringify(error));
-    });
-  }
 
-  //Return Comma saperated address
-  generateAddress(addressObj){
-      let obj = [];
-      let address = "";
-      for (let key in addressObj) {
-        obj.push(addressObj[key]);
-      }
-      obj.reverse();
-      for (let val in obj) {
-        if(obj[val].length)
-        address += obj[val]+', ';
-      }
-    return address.slice(0, -2);
-  }
-
-
-  //Start location update watch
-  watchLocation(){
-   // this.showLoader();
-    this.isWatching = true;
-    this.watchLocationUpdates = this.geolocation.watchPosition();
-    this.watchLocationUpdates.subscribe((resp) => {
-      //alert(JSON.stringify(resp));
-    //  this.hideLoader();
-      this.responseObj = resp.coords;
-      this.getGeoencoder(this.responseObj.latitude,this.responseObj.longitude);
-      // resp can be a set of coordinates, or an error (if an error occurred).
-      // resp.coords.latitude
-      // resp.coords.longitude
-    });
-  }
-
-  //Stop location update watch
-  stopLocationWatch(){
-    this.isWatching = false;
-    this.watchLocationUpdates.unsubscribe();
-  }
-*/
 
   //NFC PART - default code ******************************************************************************************
   resetScanData() {
@@ -183,15 +118,6 @@ export class HomePage {
     this.tagId = "";
   }
 
-/*
-  ionViewDidLoad() {
-    this.getData();
-  }
-
-  ionViewWillEnter() {
-    this.getData();
-  }
-*/
 
   ionViewDidEnter() {
     this.nfc.enabled().then((resolve) => {
@@ -201,7 +127,7 @@ export class HomePage {
     });
 
 
-      this.deviceUUID = this.device.uuid;
+      
 
   }
 
@@ -211,15 +137,15 @@ export class HomePage {
       if (data && data.tag && data.tag.id) {
         let tagId = this.nfc.bytesToHexString(data.tag.id);
         if (tagId) {
-          this.tagId = JSON.stringify(data);//tagId;
+          this.tagId = tagId;
           this.scanned = true;
 
-          // only testing data consider to ask web api for access
-          //this.granted = [
-          //  "7d3c6179"
-          //].indexOf(tagId) != -1;
 
-          //am modificat tagId sa nu fie doar id ci am vrut sa citesc tot tag-ul, posibil sa nu fie asta calea (oricum noua ne trebuie doar ID-ul dar nah...)
+          this.insertInDb();
+
+
+
+          
 
         } else {
           alert('NFC_NOT_DETECTED');
@@ -249,31 +175,169 @@ export class HomePage {
     this.formattedDateObj = new Date(this.formattedDate);
 
   }
+
+  getDayForInsert() {
+    var dataazi = new Date(),
+    cmonth = '' + (dataazi.getMonth() + 1),
+    cday = '' + dataazi.getDate(),
+    cyear = dataazi.getFullYear();
+    if (cmonth.length < 2) cmonth = '0' + cmonth;
+    if (cday.length < 2) cday = '0' + cday;
+    return [cyear, cmonth, cday].join('-');
+  }
+
+  getTimeForInsert() {
+    var dataazi = new Date(),
+    chour = dataazi.getHours(),
+    cminute = dataazi.getMinutes();
+    return chour + ':' + cminute;
+  }
+
+  getBeginEndOfDay(whattofetch) {
+    var returnul = null;
+    var acum = new Date();
+    var ayear = acum.getUTCFullYear();
+    var amonth = acum.getUTCMonth();
+    var aday = acum.getUTCDate();
+
+    var startHour = Math.floor(Date.UTC(ayear,amonth,aday,0,0,0,0));
+    var endHour = Math.floor(Date.UTC(ayear,amonth,aday,23,59,59,0));
+
+    switch (whattofetch) {
+      case "begin":
+        returnul = startHour;
+        break;
+      
+      case "end":
+        returnul = endHour;
+        break;
+    }
+
+    return returnul;
+  }
+
 /*
-  getData() {
-    this.sqlite.create({
-      name: 'aliopontaj.db',
-      location: 'default'
-    }).then((db: SQLiteObject) => {
-      db.executeSql('CREATE TABLE IF NOT EXISTS expense(rowid INTEGER PRIMARY KEY, a TEXT, b TEXT, c INT)', [])
-      .then(res => alert('Executed SQL'))
-      .catch(e => alert(e));
+  checkIfInDb(check_device, check_card) {
 
-      db.executeSql('INSERT into expense (rowid, a, b, c) values (?,?,?,?)',[1,'ceva','altceva',1])
-      .then(res => alert('Executed SQL'))
-      .catch(e => alert(e));
+    var startDay = this.getBeginEndOfDay('begin');
+    var endDay = this.getBeginEndOfDay('end');
+    var verificare = 'nimic';
 
-      db.executeSql('SELECT * FROM expense ORDER BY rowid DESC', [])
+    this.sqlstorage.executeSql('select * from pontaje where (timestamp between ' + startDay + ' and ' + endDay + ') and device="'+check_device+'" and card="'+check_card+'" order by pid desc limit 1',[])
+    .then(findu => {
+      if (findu.rows.length == 1 ) {
+        //we have a winner, return the pid        
+        //verificare = findu.rows.item(0).status;
+
+      } 
+    })
+    .catch(e => alert(JSON.stringify(e)));
+    alert("la sf functiei de verificare, status= "+verificare);
+    return verificare;
+  }
+*/
+
+  refreshDBarray() {
+
+    
+    
+      //alert('s-a apelat primenirea array');
+      this.items = [];
+
+
+      var startDay = this.getBeginEndOfDay('begin');
+      var endDay = this.getBeginEndOfDay('end');
+      this.sqlstorage.executeSql('SELECT distinct card FROM pontaje where timestamp between ' + startDay + ' and ' + endDay + ' ORDER BY pid DESC', [])
       .then(res => {
-        this.items = [];
+        
         for(var i=0; i<res.rows.length; i++) {
-          this.items.push({rowid:res.rows.item(i).rowid,a:res.rows.item(i).a,b:res.rows.item(i).b,c:res.rows.item(i).c})
+          //parcurgem fiecare card sa vedem ultima lui intrare
+          this.sqlstorage.executeSql('SELECT * FROM pontaje where card="' + res.rows.item(i).card + '" ORDER BY pid DESC LIMIT 1', [])
+          .then(res2 => {
+            this.zone.run(()=>{
+            for(var j=0; j<res2.rows.length; j++) {
+              
+
+              this.items.push({
+                pid:res2.rows.item(j).pid,
+                device:res2.rows.item(j).device,
+                card:res2.rows.item(j).card,
+                gps:res2.rows.item(j).gps,
+                date:res2.rows.item(j).date,
+                time:res2.rows.item(j).time,
+                status:res2.rows.item(j).status,
+                timestamp:res2.rows.item(j).timestamp,
+                synced:res2.rows.item(j).synced
+              });
+
+            }
+            });
+          })
+          .catch(e => alert(JSON.stringify(e)));
+          
         }
+        //alert(JSON.stringify(res));
       })
-      .catch(e => console.log(e));
+      .catch(e => console.log(JSON.stringify(e)));
+    
+
+  }
 
 
-    }).catch(e => alert(e));
-  }*/
+
+  insertInDb() {
+
+    var dataazi = new Date();
+    var datadeinserat = this.getDayForInsert(); //get[cyear, cmonth, cday].join('-');
+    var oradeinserat = this.getTimeForInsert(); //chour + ':' + cminute;
+
+
+
+    //sa verificam daca exista vreo intrare astazi cu cardul asta
+    var startDay = this.getBeginEndOfDay('begin');
+    var endDay = this.getBeginEndOfDay('end');
+
+    this.sqlstorage.executeSql('select * from pontaje where (timestamp between ' + startDay + ' and ' + endDay + ') and device="'+this.deviceUUID+'" and card="'+this.tagId+'" order by pid desc limit 1',[])
+    .then(findu => {
+      if (findu.rows.length > 0 ) {
+        //we have a winner, return the pid        
+        //verificare = findu.rows.item(0).status;
+        
+        if ( findu.rows.item(0).status == "start" ) {
+          this.schimbarea = "stop";
+        } else if( findu.rows.item(0).status == "stop" ) {
+          this.schimbarea = "start";
+        }
+
+        //alert(this.schimbarea);
+      }
+
+      alert("la sf functiei de verificare, status= "+this.schimbarea);
+
+
+    this.sqlstorage.executeSql('INSERT into pontaje (device, card, gps, date, time, status, timestamp) values (?,?,?,?,?,?,?)',[this.deviceUUID,this.tagId,this.responseObj.latitude+','+this.responseObj.longitude, datadeinserat, oradeinserat, this.schimbarea, dataazi.getTime()])
+    .then(res => {
+      //insert is successful, we should rebuild array
+      alert("am inserat id: "+res['insertId']);
+      this.refreshDBarray()
+
+    })
+    .catch(e => alert(JSON.stringify(e)));
+
+
+
+    })
+    .catch(e => alert(JSON.stringify(e)));
+
+    
+  }
+
+
+
+
+
+
+
+
 
 }
