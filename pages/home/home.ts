@@ -7,7 +7,9 @@ import { Platform } from 'ionic-angular';
 import { NFC } from "@ionic-native/nfc";
 import { Device } from '@ionic-native/device';
 import { SQLite, SQLiteObject } from '@ionic-native/sqlite';
-import { Toast } from '@ionic-native/toast';
+//import { Toast } from '@ionic-native/toast';
+import { ToastController } from 'ionic-angular';
+import { Network } from '@ionic-native/network';
 
 @Component({
   selector: 'page-home',
@@ -56,7 +58,9 @@ export class HomePage {
     private device: Device,
     public platform: Platform,
     private sqlite: SQLite,
-    private toast: Toast
+   // private toast: Toast,
+    public toastCtrl: ToastController,
+      private network: Network
     ) {
 
       //Custome object to save information returned
@@ -71,7 +75,15 @@ export class HomePage {
       this.currentDate = new Date();
       this.getFormattedDate();
       this.unixTime = this.currentDate.getTime();
+      
+      // network on toast
 
+      this.network.onConnect().subscribe(()=>{
+        this.toastCtrl.create({
+            message: 'Any type of network was detected',
+            duration: 3000
+        }).present();
+      });
       this.platform.ready().then(() => {     
   
           //read location
@@ -331,12 +343,6 @@ export class HomePage {
 
     
   }
-
-
-
-
-
-
 
 
 

@@ -1,6 +1,31 @@
 page-home {
+    .fixed-content {
+        background: linear-gradient(#4285f4 160px, transparent 160px);
+    }
+    
 	.granted{
         background-color: green;
         color: blanchedalmond;
     }
+    h2 {
+        padding-bottom: 10px;
+    }
+    .scanning-image {
+        height: 150px;
+        width: auto;
+        margin: auto;
+    }
+    .card-content {
+        padding: 0;
+    }
+    .primary .item, .primary , .toolbar-background {
+        background: #4285f4;
+        color: #fff;
+        text-align: center;
+    }
+    .toolbar-title {
+        color: #fff;
+        text-align: center;
+    }
+    
 }
