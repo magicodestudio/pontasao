@@ -54,8 +54,7 @@ export class HomePage {
     private nfc: NFC,
     private device: Device,
     public platform: Platform,
-    private sqlite: SQLite,
-    private toast: Toast
+    private sqlite: SQLite
     ) {
 
       //Custome object to save information returned
