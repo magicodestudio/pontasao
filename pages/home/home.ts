@@ -7,7 +7,6 @@ import { Platform } from 'ionic-angular';
 import { NFC } from "@ionic-native/nfc";
 import { Device } from '@ionic-native/device';
 import { SQLite, SQLiteObject } from '@ionic-native/sqlite';
-import { Toast } from '@ionic-native/toast';
 
 @Component({
   selector: 'page-home',

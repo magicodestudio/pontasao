@@ -17,7 +17,6 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { NFC } from "@ionic-native/nfc";
 import { Device } from '@ionic-native/device';
 import { SQLite} from '@ionic-native/sqlite';
-import { Toast } from '@ionic-native/toast';
 
 @NgModule({
   declarations: [
@@ -45,7 +44,6 @@ import { Toast } from '@ionic-native/toast';
     Device,
     StatusBar,
     SplashScreen,
-    Toast,
     Geolocation,
     //NativeGeocoder,
    // GoogleMaps,
