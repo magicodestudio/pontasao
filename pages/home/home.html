@@ -10,6 +10,7 @@
     <ion-label>Data curenta:</ion-label>
     <ion-label>{{formattedDate}}</ion-label>
   </ion-item>
+
   
    <h2>Apropiați cardul</h2>
 </div>
@@ -33,22 +34,16 @@
 
 
 
-  <ion-list>
-    <ion-item *ngFor="let item of items;">
-      <ion-icon *ngIf="item.status == 'start'" name="time"></ion-icon>
-      <ion-icon *ngIf="item.status == 'stop'" name="warning"></ion-icon>
-        <p>
-          pid:    {{item.pid}}<br>
-          device: {{item.device}}<br>
-          card:   {{item.card}}<br>
-          gps:    {{item.gps}}<br>
-          date:   {{item.date}}<br>
-          time:   {{item.time}}<br>
-          status: {{item.status}}<br>
-          timestamp: {{item.timestamp}}<br>
-          synced: {{item.synced}}
 
-        </p>
+  <ion-list>
+    <ion-item  *ngFor="let item of items;">
+      <ion-thumbnail slot="start">
+        <img src="assets/imgs/nfc.jpg">
+      </ion-thumbnail>
+        <h2>#{{item.card}} <small>{{item.time}}</small></h2>
+        <div class="itemstatus" *ngIf="item.status == 'start'" >pornit <small><ion-spinner name="dots"></ion-spinner></small></div>
+        <div class="itemstatus" *ngIf="item.status == 'stop'" >oprit <small><ion-icon name="warning"></ion-icon></small></div>
+
     </ion-item>
   </ion-list>
 
