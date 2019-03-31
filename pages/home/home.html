@@ -5,24 +5,32 @@
 </ion-header>
 
 <ion-content padding>
-<h2>Apropiați cardul</h2>
+<div class="primary">
   <ion-item>
     <ion-label>Data curenta:</ion-label>
     <ion-label>{{formattedDate}}</ion-label>
   </ion-item>
+  
+   <h2>Apropiați cardul</h2>
+</div>
+<ion-card>
+      <ion-card-content>
+          <img class="scanning-image" src="assets/imgs/scan.gif" />
+      </ion-card-content>
+  </ion-card>
+  
 
+<ion-list>
+  <ion-item  *ngFor="let item of items;">
+    <ion-thumbnail slot="start">
+      <img src="assets/imgs/nfc.jpg">
+    </ion-thumbnail>
+      <h2>#{{item.card}} <small>{{item.time}}</small></h2>
+      <div class="itemstatus" *ngIf="item.status == 'start'" >pornit <small><ion-spinner name="dots"></ion-spinner></small></div>
+      <div class="itemstatus" *ngIf="item.status == 'stop'" >oprit <small><ion-icon name="warning"></ion-icon></small></div>
 
-  <ion-list>
-    <ion-item  *ngFor="let item of items;">
-      <ion-thumbnail slot="start">
-        <img src="assets/imgs/nfc.jpg">
-      </ion-thumbnail>
-        <h2>#{{item.card}} <small>{{item.time}}</small></h2>
-        <div class="itemstatus" *ngIf="item.status == 'start'" >pornit <small><ion-spinner name="dots"></ion-spinner></small></div>
-        <div class="itemstatus" *ngIf="item.status == 'stop'" >oprit <small><ion-icon name="warning"></ion-icon></small></div>
-
-    </ion-item>
-  </ion-list>
+  </ion-item>
+</ion-list>
 
 
 

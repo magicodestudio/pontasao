@@ -17,6 +17,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { NFC } from "@ionic-native/nfc";
 import { Device } from '@ionic-native/device';
 import { SQLite} from '@ionic-native/sqlite';
+import { Network } from '@ionic-native/network';
+
 
 @NgModule({
   declarations: [
@@ -48,6 +50,7 @@ import { SQLite} from '@ionic-native/sqlite';
     //NativeGeocoder,
    // GoogleMaps,
     //Environment,
+    Network,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
