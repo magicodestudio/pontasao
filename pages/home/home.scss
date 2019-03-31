@@ -1,6 +1,7 @@
 page-home {
     .fixed-content {
         background: linear-gradient(#4285f4 160px, transparent 160px);
+        background: #4285f4;
     }
     
 	.granted{
@@ -15,6 +16,11 @@ page-home {
         height: 150px;
         width: auto;
         margin: auto;
+    }
+    .card {
+        border-radius: 15px;
+        -webkit-box-shadow: 0 1px 10px rgba(0, 0, 0, 0.5);
+        box-shadow: 0 1px 10px rgba(0, 0, 0, 0.5);
     }
     .card-content {
         padding: 0;
@@ -59,4 +65,25 @@ page-home {
 	.item-md .itemstatus small {
 		display:block;
 	}
+    
+
 }
+.nfc_read {
+    .toast-wrapper {
+        background: rgba(255, 255, 255, .8) url('../../assets/imgs/bifa.png') no-repeat 20px center ;
+        padding-left: 50px;
+    }
+    .toast-message {
+        color: #000;
+    }
+}
+.nfc_read_stop {
+    .toast-wrapper {
+        background: rgba(255, 255, 255, .8) url('../../assets/imgs/debifa.png') no-repeat 20px center ;
+        padding-left: 50px;
+    }
+    .toast-message {
+        color: #000;
+    }
+}
+

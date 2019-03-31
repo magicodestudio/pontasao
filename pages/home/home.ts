@@ -81,7 +81,9 @@ export class HomePage {
       this.currentDate = new Date();
       this.getFormattedDate();
       this.unixTime = this.currentDate.getTime();
-      
+
+        
+        
       // network on toast
 
       this.network.onConnect().subscribe(()=>{
@@ -90,6 +92,8 @@ export class HomePage {
             duration: 3000
         }).present();
       });
+        // end network on toast    
+    
       this.platform.ready().then(() => {     
   
           //read location
@@ -108,7 +112,7 @@ export class HomePage {
             db.executeSql('CREATE TABLE IF NOT EXISTS pontaje (pid INTEGER PRIMARY KEY, device TEXT NOT NULL, card TEXT NOT NULL, gps TEXT NOT NULL, date TEXT NOT NULL, time TEXT NOT NULL, status TEXT NOT NULL, timestamp NUMERIC NOT NULL, synced INTEGER NOT NULL DEFAULT 0)', [])
             .then(res => {})
             .catch(e => alert(JSON.stringify(e)));
-
+              
             this.refreshDBarray();
 
           }).catch(e => alert(JSON.stringify(e)));
@@ -157,10 +161,10 @@ export class HomePage {
         if (tagId) {
           this.tagId = tagId;
           this.scanned = true;
-
+            
 
           this.insertInDb();
-
+           
 
 
           
@@ -315,6 +319,23 @@ export class HomePage {
     .then(res => {
       //insert is successful, we should rebuild array
       //alert("am inserat id: "+res['insertId']);
+        
+                  // toast de confirmare citire
+        if (this.schimbarea == 'stop') {
+            this.toastCtrl.create({
+                message: ' Pontajul a fost oprit',
+                duration: 3000,
+                cssClass: 'nfc_read_stop'
+            }).present();
+                  // end toast confirmare citire
+         } else {
+             this.toastCtrl.create({
+                    message: ' Pontajul a fost pornit',
+                    duration: 3000,
+                    cssClass: 'nfc_read'
+                }).present();
+         }
+        
       this.refreshDBarray()
 
     })
