@@ -18,6 +18,7 @@ import { NFC } from "@ionic-native/nfc";
 import { Device } from '@ionic-native/device';
 import { SQLite} from '@ionic-native/sqlite';
 import { Network } from '@ionic-native/network';
+import { HttpModule} from '@angular/http';
 
 
 @NgModule({
@@ -30,7 +31,8 @@ import { Network } from '@ionic-native/network';
   ],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(MyApp)
+    IonicModule.forRoot(MyApp),
+    HttpModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [

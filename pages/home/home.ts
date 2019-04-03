@@ -1,5 +1,5 @@
 import { Component, NgZone  } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, LoadingController } from 'ionic-angular';
 import { Geolocation } from '@ionic-native/geolocation';
 import { Platform } from 'ionic-angular';
 //import { NativeGeocoder, NativeGeocoderReverseResult, NativeGeocoderForwardResult, NativeGeocoderOptions } from '@ionic-native/native-geocoder';
@@ -9,6 +9,9 @@ import { Device } from '@ionic-native/device';
 import { SQLite, SQLiteObject } from '@ionic-native/sqlite';
 import { ToastController } from 'ionic-angular';
 import { Network } from '@ionic-native/network';
+import { Http } from '@angular/http';
+
+
 
 @Component({
   selector: 'page-home',
@@ -28,6 +31,9 @@ export class HomePage {
   items: any = [];
   schimbarea: string = 'start';
   zone;
+  syncdata:any = {};
+  loading: any;
+  numedemo: string;
 
   granted: boolean;
   denied: boolean;
@@ -58,7 +64,9 @@ export class HomePage {
     public platform: Platform,
     private sqlite: SQLite,
     public toastCtrl: ToastController,
-    private network: Network
+    private network: Network,
+    public http: Http,
+    public loadingController:LoadingController
     ) {
 
       //Custom object to save information returned
@@ -75,6 +83,8 @@ export class HomePage {
       this.unixTime = this.currentDate.getTime();
 
       this.platform.ready().then(() => {     
+
+          this.http = http;
 
           // network on toast
           this.network.onConnect().subscribe(()=>{
@@ -150,8 +160,11 @@ export class HomePage {
           this.tagId = tagId;
           this.scanned = true;
 
+            this.insertInDb();
 
-          this.insertInDb();
+
+
+          
 
 
 
@@ -200,7 +213,7 @@ export class HomePage {
     var dataazi = new Date(),
     chour = dataazi.getHours(),
     cminute = dataazi.getMinutes();
-    return chour + ':' + cminute;
+    return (chour < 10 ? '0' : '') + chour + ':' + (cminute < 10 ? '0' : '') + cminute;
   }
 
   getBeginEndOfDay(whattofetch) {
@@ -245,6 +258,46 @@ export class HomePage {
             this.zone.run(()=>{
             for(var j=0; j<res2.rows.length; j++) {
               
+              var numeledemo = '';
+
+              if  ( res2.rows.item(j).card == 'eb11e212' || 
+                    res2.rows.item(j).card == 'ea7d63e2' || 
+                    res2.rows.item(j).card == 'ea609a52' ||
+                    res2.rows.item(j).card == 'eb305132' ||
+                    res2.rows.item(j).card == 'eae69202' ) {
+                numeledemo = 'Maria'; 
+              } else if  ( res2.rows.item(j).card == 'eb0acbb2' || 
+                    res2.rows.item(j).card == 'ea4c5aa2' || 
+                    res2.rows.item(j).card == 'ea28ef92' ||
+                    res2.rows.item(j).card == 'ea6ec092' ||
+                    res2.rows.item(j).card == 'eafcc322' ) {
+                numeledemo = 'Elena'; 
+              } else if  ( res2.rows.item(j).card == 'eb2d1d42' || 
+                    res2.rows.item(j).card == 'ea4ca732' || 
+                    res2.rows.item(j).card == 'ea62ae72' ||
+                    res2.rows.item(j).card == 'eabfca22' ||
+                    res2.rows.item(j).card == 'e1a2ab82' ) {
+                numeledemo = 'Andrei'; 
+              } else if  ( res2.rows.item(j).card == 'eb43ed82' || 
+                    res2.rows.item(j).card == 'ea8731f2' || 
+                    res2.rows.item(j).card == 'ead1a842' ||
+                    res2.rows.item(j).card == 'e31033c2' ||
+                    res2.rows.item(j).card == 'e19ba102' ) {
+                numeledemo = 'Mihai'; 
+              } else if  ( res2.rows.item(j).card == 'd9872c4f' || 
+                    res2.rows.item(j).card == 'd9872c4f' || 
+                    res2.rows.item(j).card == 'd9872c4f' ||
+                    res2.rows.item(j).card == 'd9872c4f' ||
+                    res2.rows.item(j).card == 'd9872c4f' ) {
+                numeledemo = 'Ionut'; 
+              } else if  ( res2.rows.item(j).card == '023aed5a' || 
+                    res2.rows.item(j).card == '023aed5a' || 
+                    res2.rows.item(j).card == '023aed5a' ||
+                    res2.rows.item(j).card == '023aed5a' ||
+                    res2.rows.item(j).card == '023aed5a' ) {
+                numeledemo = 'Alin'; 
+              }
+                
 
               this.items.push({
                 pid:res2.rows.item(j).pid,
@@ -255,7 +308,8 @@ export class HomePage {
                 time:res2.rows.item(j).time,
                 status:res2.rows.item(j).status,
                 timestamp:res2.rows.item(j).timestamp,
-                synced:res2.rows.item(j).synced
+                synced:res2.rows.item(j).synced,
+                namedemo: numeledemo
               });
 
             }
@@ -307,6 +361,35 @@ export class HomePage {
     .then(res => {
       //insert is successful, we should rebuild array
       //alert("am inserat id: "+res['insertId']);
+
+      // toast de confirmare citire
+        if (this.schimbarea == 'stop') {
+            this.toastCtrl.create({
+                message: ' Pontajul a fost oprit',
+                duration: 3000,
+                cssClass: 'nfc_read_stop'
+            }).present();
+                  // end toast confirmare citire
+         } else {
+             this.toastCtrl.create({
+                    message: ' Pontajul a fost pornit',
+                    duration: 3000,
+                    cssClass: 'nfc_read'
+                }).present();
+         }
+
+
+
+      let arrayToSend = {
+        device:     this.deviceUUID,
+        card:       this.tagId,
+        gps:        this.responseObj.latitude+','+this.responseObj.longitude, 
+        date:       datadeinserat, 
+        time:       oradeinserat, 
+        status:     this.schimbarea, 
+        timestamp:  dataazi.getTime(),
+      };
+      this.syncToServer(arrayToSend);
       this.refreshDBarray()
 
     })
@@ -321,6 +404,39 @@ export class HomePage {
   }
 
 
+  syncToServer(dataToSendToServer) {
+
+    /*this.loading = this.loadingController.create({ 
+      spinner: 'crescent',
+      //duration: 2000,
+      content: 'Sincronizare online...',
+      cssClass: 'custom-class custom-loading'
+    });
+    this.loading.present();*/
+
+    var link = 'https://my.scripting.work/pontaj/syncdata.php';
+    var dateleTrimise = JSON.stringify(dataToSendToServer);
+ 
+    this.http.post(link, dateleTrimise)
+    .subscribe(data => {
+        this.syncdata.response = data["_body"]; //https://stackoverflow.com/questions/39574305/property-body-does-not-exist-on-type-response
+        /*this.toastCtrl.create({
+                message: this.syncdata.response,
+                duration: 8000
+            }).present();
+        this.loading.setContent("Sincronizare reusita!");
+        setTimeout(() => {           
+          this.loading.dismiss();
+        },2000);*/
+
+    }, error => {
+        /*this.loading.setContent("Sincronizare esuata!");
+        setTimeout(() => { 
+          this.loading.dismiss();
+        },2000);*/
+    });
+
+  }
 
 
 
