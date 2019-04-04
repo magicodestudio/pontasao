@@ -327,7 +327,7 @@ export class HomePage {
                 duration: 3000,
                 cssClass: 'nfc_read_stop'
             }).present();
-                  // end toast confirmare citire
+                 
          } else {
              this.toastCtrl.create({
                     message: ' Pontajul a fost pornit',
@@ -335,7 +335,7 @@ export class HomePage {
                     cssClass: 'nfc_read'
                 }).present();
          }
-        
+         // end toast confirmare citire
       this.refreshDBarray()
 
     })
