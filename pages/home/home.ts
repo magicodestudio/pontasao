@@ -108,7 +108,13 @@ export class HomePage {
           }).then((db: SQLiteObject) => {
             this.sqlstorage = db;
             db.executeSql('CREATE TABLE IF NOT EXISTS pontaje (pid INTEGER PRIMARY KEY, device TEXT NOT NULL, card TEXT NOT NULL, gps TEXT NOT NULL, date TEXT NOT NULL, time TEXT NOT NULL, status TEXT NOT NULL, timestamp NUMERIC NOT NULL, synced INTEGER NOT NULL DEFAULT 0)', [])
-            .then(res => {})
+            .then(res => {
+
+              //demo purpose only - deleting the table - one time only this computer - testing
+              db.executeSql('DELETE FROM pontaje', []).then(res => {}).catch(e => alert(JSON.stringify(e)));
+
+
+            })
             .catch(e => alert(JSON.stringify(e)));
 
             this.refreshDBarray();
@@ -260,30 +266,30 @@ export class HomePage {
               
               var numeledemo = '';
 
-              if  ( res2.rows.item(j).card == 'eb11e212' || 
-                    res2.rows.item(j).card == 'ea7d63e2' || 
-                    res2.rows.item(j).card == 'ea609a52' ||
-                    res2.rows.item(j).card == 'eb305132' ||
-                    res2.rows.item(j).card == 'eae69202' ) {
-                numeledemo = 'Maria'; 
-              } else if  ( res2.rows.item(j).card == 'eb0acbb2' || 
-                    res2.rows.item(j).card == 'ea4c5aa2' || 
-                    res2.rows.item(j).card == 'ea28ef92' ||
-                    res2.rows.item(j).card == 'ea6ec092' ||
-                    res2.rows.item(j).card == 'eafcc322' ) {
-                numeledemo = 'Elena'; 
-              } else if  ( res2.rows.item(j).card == 'eb2d1d42' || 
-                    res2.rows.item(j).card == 'ea4ca732' || 
-                    res2.rows.item(j).card == 'ea62ae72' ||
-                    res2.rows.item(j).card == 'eabfca22' ||
-                    res2.rows.item(j).card == 'e1a2ab82' ) {
+              if  ( res2.rows.item(j).card == '421d2deb' || 
+                    res2.rows.item(j).card == '32a74cea' || 
+                    res2.rows.item(j).card == '72ae62ea' ||
+                    res2.rows.item(j).card == '22cabfea' ||
+                    res2.rows.item(j).card == '82aba2e1' ) {
                 numeledemo = 'Andrei'; 
-              } else if  ( res2.rows.item(j).card == 'eb43ed82' || 
-                    res2.rows.item(j).card == 'ea8731f2' || 
-                    res2.rows.item(j).card == 'ead1a842' ||
-                    res2.rows.item(j).card == 'e31033c2' ||
-                    res2.rows.item(j).card == 'e19ba102' ) {
+              } else if  ( res2.rows.item(j).card == '82ed43eb' || 
+                    res2.rows.item(j).card == 'f23187ea' || 
+                    res2.rows.item(j).card == '42a8d1ea' ||
+                    res2.rows.item(j).card == 'c23310e3' ||
+                    res2.rows.item(j).card == '02a19be1' ) {
                 numeledemo = 'Mihai'; 
+              } else if  ( res2.rows.item(j).card == 'b2cb0aeb' || 
+                    res2.rows.item(j).card == 'a25a4cea' || 
+                    res2.rows.item(j).card == '92ef28ea' ||
+                    res2.rows.item(j).card == '92c06eea' ||
+                    res2.rows.item(j).card == '22c3fcea' ) {
+                numeledemo = 'Elena'; 
+              } else if  ( res2.rows.item(j).card == '12e211eb' || 
+                    res2.rows.item(j).card == 'e2637dea' || 
+                    res2.rows.item(j).card == '529a60ea' ||
+                    res2.rows.item(j).card == '325130eb' ||
+                    res2.rows.item(j).card == '0292e6ea' ) {
+                numeledemo = 'Maria'; 
               } else if  ( res2.rows.item(j).card == 'd9872c4f' || 
                     res2.rows.item(j).card == 'd9872c4f' || 
                     res2.rows.item(j).card == 'd9872c4f' ||
@@ -296,6 +302,8 @@ export class HomePage {
                     res2.rows.item(j).card == '023aed5a' ||
                     res2.rows.item(j).card == '023aed5a' ) {
                 numeledemo = 'Alin'; 
+              } else {
+                numeledemo = 'Nealocat';
               }
                 
 
@@ -332,7 +340,7 @@ export class HomePage {
     var dataazi = new Date();
     var datadeinserat = this.getDayForInsert(); //get[cyear, cmonth, cday].join('-');
     var oradeinserat = this.getTimeForInsert(); //chour + ':' + cminute;
-
+    this.schimbarea = 'start';
 
 
     //sa verificam daca exista vreo intrare astazi cu cardul asta
