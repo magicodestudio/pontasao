@@ -1,7 +1,16 @@
 page-home {
-    .fixed-content {
+
+	.fixed-content {
         background: linear-gradient(#4285f4 160px, transparent 160px);
-        background: #4285f4;
+        
+        background: #87e0fd;
+background: -moz-radial-gradient(center, ellipse cover, #87e0fd 0%, #53cbf1 40%, #05abe0 100%);
+background: -webkit-radial-gradient(center, ellipse cover, #87e0fd 0%,#53cbf1 40%,#05abe0 100%);
+background: radial-gradient(ellipse at center, #87e0fd 0%,#53cbf1 40%,#05abe0 100%);
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#87e0fd', endColorstr='#05abe0',GradientType=1 );
+
+/*background: #4285f4;*/
+
     }
     
 	.granted{
@@ -18,55 +27,112 @@ page-home {
         margin: auto;
     }
     .card {
-        border-radius: 15px;
-        -webkit-box-shadow: 0 1px 10px rgba(0, 0, 0, 0.5);
-        box-shadow: 0 1px 10px rgba(0, 0, 0, 0.5);
+		border-radius: 15px;
+        -webkit-box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
     }
     .card-content {
         padding: 0;
     }
     .primary .item, .primary , .toolbar-background {
-        background: #4285f4;
+
+        background: transparent; /*#4285f4;*/
         color: #fff;
         text-align: center;
+    }
+    .primary {
+    	margin-top: 50px;
     }
     .toolbar-title {
         color: #fff;
         text-align: center;
     }
 
+
+    ion-list .item-md {
+    	
+    	padding-right:12px;
+    }
+
     .item-md ion-thumbnail {
 	    min-width: 1px;
-	    min-height: 80px;
+	    min-height: 1px;
 	    float: left;
 	    width: 12%;
+	}
+	.item-md ion-thumbnail.iostart,
+	.item-md ion-thumbnail.iostop {
+        min-width: 1px;
+	    min-height: 1px;
+	    height: 33px;
+	    float: left;
+	    width: 12%;
+	    border: 2px solid #888;
+	    border-radius: 8px;
+	    text-align: center;
+	}
+	.item-md ion-thumbnail.iostart .icon,
+	.item-md ion-thumbnail.iostop .icon {
+        font-size: 22px;
+		margin-top: 4px;
+		color: #64d247;
+	}
+	.item-md ion-thumbnail.iostop .icon {
+		color: #f36872;
 	}
     .item-md ion-thumbnail img {
     	width: 100%;
     	height: auto;
     }
     .item-md h2 {
-	    margin: 2px 0;
-	    padding-left:10px;
-	    font-size: 1.6rem;
+        margin: 5px 0;
+	    padding-left: 10px;
+	    font-size: 2rem;
 	    font-weight: 500;
 	    float: left;
-	    width: 40%;
+	    width: 73%;
+	}
+	ion-list ion-item h2 {
+		padding: 0;
 	}
 	.item-md h2 small {
-	    display: block;
+	    /*display: block;*/
 	    font-weight:300;
 	}
 	.item-md .itemstatus {
-		width: 48%;
+		width: 15%;
 	    float: left;
-	    text-align:right;
+	    text-align: right;
+	    padding-top: 9px;
+	    font-weight: 400;
+	}
+	.item-md .itemstatus .icon-md {
+	    font-size: 1.6em;
+	    color: green;
+	    margin-top: 5px;
 	}
 	.item-md .itemstatus small {
 		display:block;
 	}
-    
 
+	.item-md .colorbordergreen,
+	.item-md .colorborderred {
+		position: absolute;
+	    right: 0;
+	    top: 0;
+	    width: 10px;
+	    height: 100%;
+	    background: #64d247;
+	}
+	.item-md .colorborderred {
+	    background: #FF1958;
+	}
+	.card-md .item-md.item-block .item-inner .input-wrapper {
+		border-bottom: 1px solid #ccc;
+	}
+	.card-md .item-md.item-block:last-child .item-inner .input-wrapper {
+		border-bottom: 0;
+	}
 }
 .nfc_read {
     .toast-wrapper {
@@ -85,5 +151,5 @@ page-home {
     .toast-message {
         color: #000;
     }
-}
 
+}

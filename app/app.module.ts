@@ -17,6 +17,9 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { NFC } from "@ionic-native/nfc";
 import { Device } from '@ionic-native/device';
 import { SQLite} from '@ionic-native/sqlite';
+import { Network } from '@ionic-native/network';
+import { HttpModule} from '@angular/http';
+
 
 import { Network } from '@ionic-native/network';
 
@@ -31,7 +34,8 @@ import { Network } from '@ionic-native/network';
   ],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(MyApp)
+    IonicModule.forRoot(MyApp),
+    HttpModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [

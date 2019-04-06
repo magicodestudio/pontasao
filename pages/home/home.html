@@ -1,21 +1,20 @@
-<ion-header>
-  <ion-navbar>
-    <ion-title>NFC-Access Card</ion-title>
-  </ion-navbar>
-</ion-header>
-
 <ion-content padding>
- <div class="primary">
+
+<div class="primary">
   <ion-item>
-    <ion-label>Data curenta:</ion-label>
-    <ion-label>{{formattedDate}}</ion-label>
+    <h1>Dynamic Time Manager</h1>
+    <small>{{formattedDate}}</small>
   </ion-item>
+
 
   
    <h2>Apropiați cardul</h2>
 </div>
   
-  <ion-card>
+
+  
+
+<ion-card>
       <ion-card-content>
           <img class="scanning-image" src="assets/imgs/scan.gif" />
       </ion-card-content>
@@ -41,6 +40,28 @@
   </ion-card>
  
 
+
+
+<ion-card>
+  <ion-card-content>
+    <ion-list>
+      <ion-item  *ngFor="let item of items;">
+        <ion-thumbnail *ngIf="item.status == 'start'" slot="start" class="iostart">
+          <ion-icon name="checkmark-circle"></ion-icon>
+        </ion-thumbnail>
+        <ion-thumbnail *ngIf="item.status == 'stop'" slot="start" class="iostop">
+          <ion-icon name="hand"></ion-icon>
+        </ion-thumbnail>
+          <h2 *ngIf="item.status == 'start'" >{{item.namedemo}} <small>a început lucrul la </small></h2>
+          <h2 *ngIf="item.status == 'stop'" >{{item.namedemo}} <small>a încetat lucrul la </small></h2>
+          <div class="itemstatus">{{item.time}}</div>
+          <div *ngIf="item.status == 'start'" class="colorbordergreen"></div>
+          <div *ngIf="item.status == 'stop'" class="colorborderred"></div>
+      </ion-item>
+      
+    </ion-list>
+  </ion-card-content>
+</ion-card>
 
 
 
