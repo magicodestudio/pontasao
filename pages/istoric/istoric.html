@@ -1,0 +1,42 @@
+<!--
+  Generated template for the IstoricPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <ion-title>Istoric</ion-title>
+    <ion-buttons end>
+        <button ion-button (click)="inchideIstoric()">&times;</button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+
+
+ <ion-card>
+  <ion-card-content>
+    <ion-list>
+      <ion-item  *ngFor="let a of abc;" (click)="istoricModal()">
+        <ion-thumbnail *ngIf="a.status == 'start'" slot="start" class="iostart">
+          <ion-icon name="checkmark-circle"></ion-icon>
+        </ion-thumbnail>
+        <ion-thumbnail *ngIf="a.status == 'stop'" slot="start" class="iostop">
+          <ion-icon name="hand"></ion-icon>
+        </ion-thumbnail>
+          <h2 *ngIf="a.status == 'start'" >{{a.card}} <small>a început lucrul la </small></h2>
+          <h2 *ngIf="a.status == 'stop'" >{{a.card}} <small>a încetat lucrul la </small></h2>
+          <div class="itemstatus">{{a.time}}</div>
+          <div *ngIf="a.status == 'start'" class="colorbordergreen"></div>
+          <div *ngIf="a.status == 'stop'" class="colorborderred"></div>
+      </ion-item>
+      
+    </ion-list>
+  </ion-card-content>
+</ion-card>
+   
+  
+
+</ion-content>

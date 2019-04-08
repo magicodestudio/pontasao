@@ -13,9 +13,6 @@ import { HomePage } from '../pages/home/home';
   templateUrl: 'app.html'
 })
 export class MyApp {
-    //am schimbat mai jos din TabsPage in HomePage
-  rootPage:any = HomePage;
-
   //am schimbat mai jos din TabsPage in HomePage
   rootPage:any = HomePage;
 

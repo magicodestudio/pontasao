@@ -7,8 +7,7 @@ import { Platform } from 'ionic-angular';
 import { NFC } from "@ionic-native/nfc";
 import { Device } from '@ionic-native/device';
 import { SQLite, SQLiteObject } from '@ionic-native/sqlite';
-import { ToastController } from 'ionic-angular';
-import { Network } from '@ionic-native/network';
+
 import { Http } from '@angular/http';
 
 
@@ -16,7 +15,7 @@ import { Http } from '@angular/http';
 //import { Toast } from '@ionic-native/toast';
 import { ToastController } from 'ionic-angular';
 import { Network } from '@ionic-native/network';
-
+import { ModalController } from 'ionic-angular';
 
 @Component({
   selector: 'page-home',
@@ -34,6 +33,7 @@ export class HomePage {
   bababiba;
   sqlstorage: SQLiteObject;
   items: any = [];
+  itemsTrimis: any = [];
   schimbarea: string = 'start';
   zone;
   syncdata:any = {};
@@ -72,7 +72,9 @@ export class HomePage {
     public toastCtrl: ToastController,
     private network: Network,
     public http: Http,
-    public loadingController:LoadingController
+    public loadingController:LoadingController,
+    private modalCtrl: ModalController,
+     
 
     ) {
 
@@ -88,7 +90,6 @@ export class HomePage {
       this.currentDate = new Date();
       this.getFormattedDate();
       this.unixTime = this.currentDate.getTime();
-
         
         
       // network on toast
@@ -126,7 +127,7 @@ export class HomePage {
             location: 'default'
           }).then((db: SQLiteObject) => {
             this.sqlstorage = db;
-            db.executeSql('CREATE TABLE IF NOT EXISTS pontaje (pid INTEGER PRIMARY KEY, device TEXT NOT NULL, card TEXT NOT NULL, gps TEXT NOT NULL, date TEXT NOT NULL, time TEXT NOT NULL, status TEXT NOT NULL, timestamp NUMERIC NOT NULL, synced INTEGER NOT NULL DEFAULT 0)', [])
+            db.executeSql('CREATE TABLE IF NOT EXISTS pontaje (pid INTEGER PRIMARY KEY, device TEXT NOT NULL, card TEXT NOT NULL, numeledemo TEXT NOT NULL, gps TEXT NOT NULL, date TEXT NOT NULL, time TEXT NOT NULL, status TEXT NOT NULL, timestamp NUMERIC NOT NULL, synced INTEGER NOT NULL DEFAULT 0)', [])
             .then(res => {
 
               //demo purpose only - deleting the table - one time only this computer - testing
@@ -374,7 +375,7 @@ export class HomePage {
       //alert("la sf functiei de verificare, status= "+this.schimbarea);
 
 
-    this.sqlstorage.executeSql('INSERT into pontaje (device, card, gps, date, time, status, timestamp) values (?,?,?,?,?,?,?)',[this.deviceUUID,this.tagId,this.responseObj.latitude+','+this.responseObj.longitude, datadeinserat, oradeinserat, this.schimbarea, dataazi.getTime()])
+    this.sqlstorage.executeSql('INSERT into pontaje (device, card, gps, date, time, status, timestamp) values (?,?,?,?,?,?,?)',[this.deviceUUID,this.tagId, this.responseObj.latitude+','+this.responseObj.longitude, datadeinserat, oradeinserat, this.schimbarea, dataazi.getTime()])
     .then(res => {
       //insert is successful, we should rebuild array
       //alert("am inserat id: "+res['insertId']);
@@ -459,5 +460,33 @@ export class HomePage {
     });
 
   }
-
+    
+    // creeaza o pagina in modal si trimite parametrul de card id  (care ar trebui schimbat cu name ca sa cuprinda taote id-urile) 
+     istoricModal(event) {
+        /*  var target = event.target || event.srcElement || event.currentTarget;
+          var cidn = target.getElementsByTagName('h2')[0].innerHTML;*/
+          this.sqlstorage.executeSql('SELECT card, time, date, status FROM pontaje WHERE card ="' + this.tagId + '"  ORDER BY pid DESC LIMIT 10', []).then( res=>{
+          this.itemsTrimis =[];
+              for(var i=0; i<res.rows.length; i++){
+          //this.abc=JSON.stringify(res.rows.item(0));
+          //istoricText += ' <br/> ' + JSON.stringify(res.rows.item(i));
+               this.itemsTrimis.push({
+                    card:res.rows.item(i).card,
+                    time:res.rows.item(i).time,
+                    date:res.rows.item(i).date,
+                    status:res.rows.item(i).status
+                });
+              } 
+      
+       let profileModal = this.modalCtrl.create('IstoricPage', { tagIdTrimis : this.itemsTrimis });
+       profileModal.present();  
+          
+          })
+        .catch(e => console.log(e));
+      
+     }
+    
+    
+    
+    
 }
